@@ -1,0 +1,62 @@
+CREATE TABLE IF NOT EXISTS roles (
+  id SERIAL PRIMARY KEY,
+  nameRol VARCHAR(255) NOT NULL,
+  permission INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS cities (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS communes (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  city_id INTEGER REFERENCES cities(id) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  id_rol INTEGER REFERENCES roles(id) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS addresses (
+  id SERIAL PRIMARY KEY,
+  street_name VARCHAR(255) NOT NULL,
+  street_number VARCHAR(255) NOT NULL,
+  user_id INTEGER REFERENCES users(id),
+  city_id INTEGER REFERENCES cities(id) NOT NULL,
+  commune_id INTEGER REFERENCES communes(id) NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS brands (
+  id SERIAL PRIMARY KEY,
+  brandName VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS categories (
+  id SERIAL PRIMARY KEY,
+  categoryName VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS products (
+  id SERIAL PRIMARY KEY,
+  productName VARCHAR(255) NOT NULL,
+  price NUMERIC(10, 2) NOT NULL,
+  stock INTEGER NOT NULL,
+  description TEXT NOT NULL,
+  image VARCHAR(255) NOT NULL,
+  id_brand INTEGER REFERENCES brands(id),
+  id_category INTEGER REFERENCES categories(id)
+);
+
+CREATE TABLE IF NOT EXISTS contacts (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  rut VARCHAR(255) NOT NULL,
+  address_id INTEGER REFERENCES addresses(id) NOT NULL
+);
